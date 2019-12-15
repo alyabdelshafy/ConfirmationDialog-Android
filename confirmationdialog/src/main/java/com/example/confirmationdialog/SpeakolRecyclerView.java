@@ -13,6 +13,7 @@ public class SpeakolRecyclerView extends RecyclerView {
     public GridLayoutManager gridLayoutManager;
     public Context context;
     public int totalCount = 0;
+    public boolean isBottom = true;
     public SpeakolRecyclerView(@NonNull Context context) {
         super(context);
         this.context = context;
@@ -34,16 +35,34 @@ public class SpeakolRecyclerView extends RecyclerView {
         if(layout instanceof GridLayoutManager){
             GridLayoutManager gridLayoutManager = ((GridLayoutManager)layout);
             final int spanCount = gridLayoutManager.getSpanCount();
-            gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                @Override
-                public int getSpanSize(int position) {
-                    if(position >= totalCount){
-                        return spanCount;
-                    }else {
-                        return 1;
+            if(isBottom){
+                gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                    @Override
+                    public int getSpanSize(int position) {
+                        if(position >= totalCount){
+                            return spanCount;
+                        }else {
+                            return 1;
+                        }
                     }
-                }
-            });
+                });
+            }else {
+                gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                    @Override
+                    public int getSpanSize(int position) {
+                        SpeakolAdapter speakolAdapter =  (SpeakolAdapter) getAdapter();
+                        if(speakolAdapter != null) {
+                            if (position < speakolAdapter.getAdsCount() -1) {
+                                return 1;
+                            } else {
+                                return spanCount;
+                            }
+                        }
+                        return spanCount;
+                    }
+                });
+            }
+
         }
     }
 
@@ -53,8 +72,9 @@ public class SpeakolRecyclerView extends RecyclerView {
         super.setAdapter(adapter);
     }
 
-    public void setSpeakolLayoutManager(LayoutManager layout, int totalCount){
+    public void setSpeakolLayoutManager(LayoutManager layout, int totalCount,boolean isBottom){
         this.totalCount = totalCount;
+        this.isBottom = isBottom;
         setLayoutManager(layout);
     }
 

@@ -26,6 +26,7 @@ public abstract class SpeakolAdapter<S> extends RecyclerView.Adapter {
     private HashMap<Integer, AdModel> speakolListHashMap;
 
     private boolean isHeaderIncluded = true;
+    private boolean isBottom = false;
 
 
     public SpeakolAdapter(Context context, int count) {
@@ -43,10 +44,10 @@ public abstract class SpeakolAdapter<S> extends RecyclerView.Adapter {
         if (type == speakolType) {
             return new AdsViewHolder(
                     LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_ads, viewGroup, false));
-        }else if(type == speakolHeader){
+        } else if (type == speakolHeader) {
             return new SpeakolHeaderViewHolder(
                     LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_header, viewGroup, false));
-        }else {
+        } else {
             return onCreateSpeakolViewHolder(viewGroup, type);
         }
 
@@ -54,48 +55,92 @@ public abstract class SpeakolAdapter<S> extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
-        if(position == getSpeakolItemCount() && isHeaderIncluded){
+        if (isBottom) {
+            if (position == getSpeakolItemCount() && isHeaderIncluded) {
 
-        }else if (position >= getSpeakolItemCount()) {
-            AdsViewHolder adsViewHolder = (AdsViewHolder) viewHolder;
-            if (type.equals(SpeakolRecyclerView.SpeakolType.LIST)) {
-                ArrayList<AdModel> adModel = new ArrayList<>();
-                adModel.add(adModelArrayList.get(position - getSpeakolItemCount()));
-                adsViewHolder.setData(adModel, type, 1);
+            } else if (position >= getSpeakolItemCount()) {
+                AdsViewHolder adsViewHolder = (AdsViewHolder) viewHolder;
+                if (type.equals(SpeakolRecyclerView.SpeakolType.LIST)) {
+                    ArrayList<AdModel> adModel = new ArrayList<>();
+                    adModel.add(adModelArrayList.get(position - getSpeakolItemCount()));
+                    adsViewHolder.setData(adModel, type, 1);
+                } else {
+                    int adPosition = position - getSpeakolItemCount();
+                    if (speakolGridHashMap.containsKey(adPosition)) {
+                        adsViewHolder.setData(speakolGridHashMap.get(adPosition), type, noOfItemsPerRow);
+                    }
+                }
             } else {
-                int adPosition = position - getSpeakolItemCount();
-                if(speakolGridHashMap.containsKey(adPosition)){
-                    adsViewHolder.setData(speakolGridHashMap.get(adPosition), type, noOfItemsPerRow);
+                onBindSpeakolViewHolder(viewHolder, position);
+            }
+        } else {
+            if (position == 0 && isHeaderIncluded) {
+
+            } else {
+                double noOfRows = adModelArrayList.size() / (double) noOfItemsPerRow;
+                int adsCount = (int) Math.ceil(noOfRows);
+                if (position < adsCount) {
+                    AdsViewHolder adsViewHolder = (AdsViewHolder) viewHolder;
+                    if (type.equals(SpeakolRecyclerView.SpeakolType.LIST)) {
+                        ArrayList<AdModel> adModel = new ArrayList<>();
+                        adModel.add(adModelArrayList.get(position));
+                        adsViewHolder.setData(adModel, type, 1);
+                    } else {
+                        if (speakolGridHashMap.containsKey(position)) {
+                            adsViewHolder.setData(speakolGridHashMap.get(position), type, noOfItemsPerRow);
+                        }
+                    }
+                } else {
+                    onBindSpeakolViewHolder(viewHolder, position);
                 }
             }
-        }else {
-            onBindSpeakolViewHolder(viewHolder, position);
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position >= getSpeakolItemCount() ) {
-            if(isHeaderIncluded){
-                if(position == getSpeakolItemCount()){
-                    return speakolHeader;
+        if (isBottom) {
+            if (position >= getSpeakolItemCount()) {
+                if (isHeaderIncluded) {
+                    if (position == getSpeakolItemCount()) {
+                        return speakolHeader;
+                    }
+                }
+                return speakolType;
+            } else {
+                return getSpeakolItemType(position);
+            }
+        } else {
+            if (position == 0 && isHeaderIncluded) {
+                return speakolHeader;
+            } else {
+                double noOfRows = adModelArrayList.size() / (double) noOfItemsPerRow;
+                int adsCount = (int) Math.ceil(noOfRows);
+                if (position < adsCount) {
+                    return speakolType;
+                } else {
+                    return getSpeakolItemType(position);
                 }
             }
-            return speakolType;
-        } else {
-            return getSpeakolItemType(position);
         }
     }
 
     @Override
     public int getItemCount() {
-        double noOfRows = adModelArrayList.size() /(double) noOfItemsPerRow;
-        return getSpeakolItemCount() + (int) Math.ceil(noOfRows) ;
+
+        return getSpeakolItemCount() + getAdsCount();
 
     }
 
     public SpeakolAdapter() {
         super();
+    }
+
+
+    public int getAdsCount(){
+        double noOfRows = adModelArrayList.size() / (double) noOfItemsPerRow;
+       return  (int) Math.ceil(noOfRows);
+
     }
 
 
@@ -110,19 +155,20 @@ public abstract class SpeakolAdapter<S> extends RecyclerView.Adapter {
     public void onGetAddsSuccess(ArrayList<AdModel> adModelArrayList,
                                  SpeakolRecyclerView.SpeakolType type,
                                  int noOfItem,
-                                 boolean isHeaderIncluded) {
+                                 boolean isHeaderIncluded,
+                                 boolean isBottom) {
         if (type.equals(SpeakolRecyclerView.SpeakolType.GRID)) {
             this.type = SpeakolRecyclerView.SpeakolType.GRID;
         } else {
             this.type = SpeakolRecyclerView.SpeakolType.LIST;
         }
+        this.isBottom = isBottom;
         this.adModelArrayList = adModelArrayList;
         this.noOfItemsPerRow = noOfItem;
         this.isHeaderIncluded = isHeaderIncluded;
         setSpeakolHashMap();
         notifyDataSetChanged();
     }
-
 
 
     public void setSpeakolHashMap() {

@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     int userSpanCount = 4;
     int noOfAds = 13;
     int noOfItemPerRow = 2;
-    boolean isHeaderIncluded = true;
+    boolean isHeaderIncluded = false;
     SpeakolRecyclerView.SpeakolType type = SpeakolRecyclerView.SpeakolType.GRID;
 
 
@@ -29,8 +29,8 @@ public class MainActivity extends AppCompatActivity {
         DeveloperAdapter adapter = new DeveloperAdapter(this,getDeveloperFakeData());
         speakolRecyclerView.setAdapter(adapter);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, userSpanCount);
-        speakolRecyclerView.setSpeakolLayoutManager(new LinearLayoutManager(this),adapter.getSpeakolItemCount());
-        adapter.onGetAddsSuccess(getAdsFakeData(noOfAds), SpeakolRecyclerView.SpeakolType.GRID,noOfItemPerRow,isHeaderIncluded);
+        speakolRecyclerView.setSpeakolLayoutManager(gridLayoutManager,adapter.getSpeakolItemCount(),true);
+        adapter.onGetAddsSuccess(getAdsFakeData(noOfAds), SpeakolRecyclerView.SpeakolType.GRID,noOfItemPerRow,isHeaderIncluded,true);
     }
 
 
