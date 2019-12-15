@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.HeaderViewListAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,12 +17,15 @@ public abstract class SpeakolAdapter<S> extends RecyclerView.Adapter {
     private Context context;
 
     private int speakolType = 76687666;
+    private int speakolHeader = 28723872;
 
     private int noOfItemsPerRow = 1;
     private ArrayList<AdModel> adModelArrayList;
     private SpeakolRecyclerView.SpeakolType type = SpeakolRecyclerView.SpeakolType.LIST;
     private HashMap<Integer, ArrayList<AdModel>> speakolGridHashMap;
     private HashMap<Integer, AdModel> speakolListHashMap;
+
+    private boolean isHeaderIncluded = true;
 
 
     public SpeakolAdapter(Context context, int count) {
@@ -39,7 +43,10 @@ public abstract class SpeakolAdapter<S> extends RecyclerView.Adapter {
         if (type == speakolType) {
             return new AdsViewHolder(
                     LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_ads, viewGroup, false));
-        } else {
+        }else if(type == speakolHeader){
+            return new SpeakolHeaderViewHolder(
+                    LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_header, viewGroup, false));
+        }else {
             return onCreateSpeakolViewHolder(viewGroup, type);
         }
 
@@ -47,7 +54,9 @@ public abstract class SpeakolAdapter<S> extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
-        if (position >= getSpeakolItemCount()) {
+        if(position == getSpeakolItemCount() && isHeaderIncluded){
+
+        }else if (position >= getSpeakolItemCount()) {
             AdsViewHolder adsViewHolder = (AdsViewHolder) viewHolder;
             if (type.equals(SpeakolRecyclerView.SpeakolType.LIST)) {
                 ArrayList<AdModel> adModel = new ArrayList<>();
@@ -59,14 +68,19 @@ public abstract class SpeakolAdapter<S> extends RecyclerView.Adapter {
                     adsViewHolder.setData(speakolGridHashMap.get(adPosition), type, noOfItemsPerRow);
                 }
             }
-        } else {
+        }else {
             onBindSpeakolViewHolder(viewHolder, position);
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position >= getSpeakolItemCount()) {
+        if (position >= getSpeakolItemCount() ) {
+            if(isHeaderIncluded){
+                if(position == getSpeakolItemCount()){
+                    return speakolHeader;
+                }
+            }
             return speakolType;
         } else {
             return getSpeakolItemType(position);
@@ -76,8 +90,8 @@ public abstract class SpeakolAdapter<S> extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         double noOfRows = adModelArrayList.size() /(double) noOfItemsPerRow;
-        Log.v("TEST_ADS_SIZE",noOfRows +"---"+adModelArrayList.size()+"--"+noOfItemsPerRow);
-        return getSpeakolItemCount() + (int) Math.ceil(noOfRows);
+        return getSpeakolItemCount() + (int) Math.ceil(noOfRows) ;
+
     }
 
     public SpeakolAdapter() {
@@ -93,7 +107,10 @@ public abstract class SpeakolAdapter<S> extends RecyclerView.Adapter {
 
     public abstract int getSpeakolItemType(int position);
 
-    public void onGetAddsSuccess(ArrayList<AdModel> adModelArrayList, SpeakolRecyclerView.SpeakolType type,int noOfItem) {
+    public void onGetAddsSuccess(ArrayList<AdModel> adModelArrayList,
+                                 SpeakolRecyclerView.SpeakolType type,
+                                 int noOfItem,
+                                 boolean isHeaderIncluded) {
         if (type.equals(SpeakolRecyclerView.SpeakolType.GRID)) {
             this.type = SpeakolRecyclerView.SpeakolType.GRID;
         } else {
@@ -101,6 +118,7 @@ public abstract class SpeakolAdapter<S> extends RecyclerView.Adapter {
         }
         this.adModelArrayList = adModelArrayList;
         this.noOfItemsPerRow = noOfItem;
+        this.isHeaderIncluded = isHeaderIncluded;
         setSpeakolHashMap();
         notifyDataSetChanged();
     }

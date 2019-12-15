@@ -13,10 +13,11 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    int userData = 11;
-    int userSpanCount = 2;
+    int userData = 15;
+    int userSpanCount = 4;
     int noOfAds = 13;
-    int noOfItemPerRow = 3;
+    int noOfItemPerRow = 2;
+    boolean isHeaderIncluded = true;
     SpeakolRecyclerView.SpeakolType type = SpeakolRecyclerView.SpeakolType.GRID;
 
 
@@ -28,8 +29,8 @@ public class MainActivity extends AppCompatActivity {
         DeveloperAdapter adapter = new DeveloperAdapter(this,getDeveloperFakeData());
         speakolRecyclerView.setAdapter(adapter);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, userSpanCount);
-        speakolRecyclerView.setSpeakolLayoutManager(gridLayoutManager,adapter.getSpeakolItemCount());
-        adapter.onGetAddsSuccess(getAdsFakeData(noOfAds), SpeakolRecyclerView.SpeakolType.GRID,noOfItemPerRow);
+        speakolRecyclerView.setSpeakolLayoutManager(new LinearLayoutManager(this),adapter.getSpeakolItemCount());
+        adapter.onGetAddsSuccess(getAdsFakeData(noOfAds), SpeakolRecyclerView.SpeakolType.GRID,noOfItemPerRow,isHeaderIncluded);
     }
 
 
@@ -45,6 +46,12 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<AdModel> developerData = new ArrayList<>();
         for(int i= 0; i<noOfAds; i++){
             developerData.add(new AdModel("",""));
+        }
+        if(isHeaderIncluded){
+            for(int i= 0; i<noOfItemPerRow; i++){
+                developerData.add(new AdModel("",""));
+            }
+
         }
         return developerData;
     }
