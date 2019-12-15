@@ -2,4 +2,5 @@
 <resources>
     <color name="minty_green">#00FF53</color>
     <color name="very_light_pink">#cecece</color>
+    <color name="hot_pink">#ff0087</color>
 </resources>
