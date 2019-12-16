@@ -154,7 +154,7 @@ public abstract class SpeakolAdapter<S> extends RecyclerView.Adapter {
 
     public void onGetAddsSuccess(ArrayList<AdModel> adModelArrayList,
                                  SpeakolRecyclerView.SpeakolType type,
-                                 int noOfItem,
+                                 int noOfItemsPerRow,
                                  boolean isHeaderIncluded,
                                  boolean isBottom) {
         if (type.equals(SpeakolRecyclerView.SpeakolType.GRID)) {
@@ -164,7 +164,7 @@ public abstract class SpeakolAdapter<S> extends RecyclerView.Adapter {
         }
         this.isBottom = isBottom;
         this.adModelArrayList = adModelArrayList;
-        this.noOfItemsPerRow = noOfItem;
+        this.noOfItemsPerRow = noOfItemsPerRow;
         this.isHeaderIncluded = isHeaderIncluded;
         setSpeakolHashMap();
         notifyDataSetChanged();
