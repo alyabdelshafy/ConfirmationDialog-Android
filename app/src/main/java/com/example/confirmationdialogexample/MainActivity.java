@@ -33,8 +33,9 @@ public class MainActivity extends AppCompatActivity {
         speakolRecyclerView.setAdapter(adapter);
 
         if(isList){
-            adapter.onGetAddsSuccess(getAdsFakeData(noOfAds), SpeakolRecyclerView.SpeakolType.LIST,noOfItemPerRow,isHeaderIncluded,isBottom);
+            noOfItemPerRow = 1;
             speakolRecyclerView.setSpeakolLayoutManager(new LinearLayoutManager(this),adapter.getSpeakolItemCount(),isBottom);
+            adapter.onGetAddsSuccess(getAdsFakeData(noOfAds), SpeakolRecyclerView.SpeakolType.LIST,noOfItemPerRow,isHeaderIncluded,isBottom);
         }else {
             GridLayoutManager gridLayoutManager = new GridLayoutManager(this, userSpanCount);
             speakolRecyclerView.setSpeakolLayoutManager(gridLayoutManager,adapter.getSpeakolItemCount(),isBottom);
