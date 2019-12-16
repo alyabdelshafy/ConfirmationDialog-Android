@@ -25,8 +25,8 @@ public class AdsViewHolder extends RecyclerView.ViewHolder {
 
     private void onBindOneItemPerRow(AdModel adModel) {
         ad1LinearLayout.setVisibility(View.VISIBLE);
-        ad2LinearLayout.setVisibility(View.INVISIBLE);
-        ad3LinearLayout.setVisibility(View.INVISIBLE);
+        ad2LinearLayout.setVisibility(View.GONE);
+        ad3LinearLayout.setVisibility(View.GONE);
     }
 
     private void onBindTwoItemPerRow(ArrayList<AdModel> adModelArrayList) {
