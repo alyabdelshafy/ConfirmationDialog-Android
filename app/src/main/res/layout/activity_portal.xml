@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".PortalActivity"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textSize="18sp"
+            android:text="List or Grid"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content"/>
+
+        <info.hoang8f.android.segmented.SegmentedGroup
+            xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/segmented2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal"
+            segmentedgroup:sc_border_width="2dp"
+            segmentedgroup:sc_corner_radius="10dp">
+
+        <RadioButton
+            android:id="@+id/btn_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="List"
+            style="@style/RadioButton" />
+
+        <RadioButton
+            android:id="@+id/btn_grid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Grid"
+            style="@style/RadioButton" />
+
+    </info.hoang8f.android.segmented.SegmentedGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textSize="18sp"
+            android:text="Enable Header"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content"/>
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/swt_header"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textSize="18sp"
+            android:text="Ads position"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content"/>
+
+        <info.hoang8f.android.segmented.SegmentedGroup
+            xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/position_segment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal"
+            segmentedgroup:sc_border_width="2dp"
+            segmentedgroup:sc_corner_radius="10dp">
+
+            <RadioButton
+                android:id="@+id/btn_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Top"
+                style="@style/RadioButton" />
+
+            <RadioButton
+                android:id="@+id/btn_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bottom"
+                style="@style/RadioButton" />
+
+        </info.hoang8f.android.segmented.SegmentedGroup>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:textSize="25sp"
+        android:text="Widget box"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textSize="18sp"
+            android:text="Item per line"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content"/>
+
+        <info.hoang8f.android.segmented.SegmentedGroup
+            xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/ads_segment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal"
+            segmentedgroup:sc_border_width="2dp"
+            segmentedgroup:sc_corner_radius="10dp">
+
+            <RadioButton
+                android:id="@+id/btn_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
+                style="@style/RadioButton" />
+
+            <RadioButton
+                android:id="@+id/btn_two"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2"
+                style="@style/RadioButton" />
+
+
+            <RadioButton
+                android:id="@+id/btn_three"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3"
+                style="@style/RadioButton" />
+
+        </info.hoang8f.android.segmented.SegmentedGroup>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:textSize="18sp"
+            android:text="Number per ads"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:id="@+id/et_number_per_ads"
+            android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@android:color/transparent"
+        android:textAllCaps="false"
+        android:id="@+id/btn_create"
+        android:text="Create"/>
+
+
+
+</LinearLayout>

@@ -13,11 +13,13 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    int userData = 15;
-    int userSpanCount = 4;
+    int userData = 4;
+    int userSpanCount = 3;
     int noOfAds = 13;
     int noOfItemPerRow = 2;
     boolean isHeaderIncluded = false;
+    boolean isBottom = true;
+    boolean isList = true;
     SpeakolRecyclerView.SpeakolType type = SpeakolRecyclerView.SpeakolType.GRID;
 
 
@@ -25,12 +27,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        checkIntent();
         SpeakolRecyclerView speakolRecyclerView = findViewById(R.id.recycler_view);
         DeveloperAdapter adapter = new DeveloperAdapter(this,getDeveloperFakeData());
         speakolRecyclerView.setAdapter(adapter);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, userSpanCount);
-        speakolRecyclerView.setSpeakolLayoutManager(gridLayoutManager,adapter.getSpeakolItemCount(),true);
-        adapter.onGetAddsSuccess(getAdsFakeData(noOfAds), SpeakolRecyclerView.SpeakolType.GRID,noOfItemPerRow,isHeaderIncluded,true);
+
+        if(isList){
+            adapter.onGetAddsSuccess(getAdsFakeData(noOfAds), SpeakolRecyclerView.SpeakolType.LIST,noOfItemPerRow,isHeaderIncluded,isBottom);
+            speakolRecyclerView.setSpeakolLayoutManager(new LinearLayoutManager(this),adapter.getSpeakolItemCount(),isBottom);
+        }else {
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(this, userSpanCount);
+            speakolRecyclerView.setSpeakolLayoutManager(gridLayoutManager,adapter.getSpeakolItemCount(),isBottom);
+            adapter.onGetAddsSuccess(getAdsFakeData(noOfAds), SpeakolRecyclerView.SpeakolType.GRID,noOfItemPerRow,isHeaderIncluded,isBottom);
+        }
+    }
+
+    private void checkIntent() {
+        noOfAds = getIntent().getIntExtra(Constants.NUMBER_PER_AD,1);
+        noOfItemPerRow = getIntent().getIntExtra(Constants.ITEM_PER_LINE,1);
+        isBottom = getIntent().getBooleanExtra(Constants.IS_BOTTOM,true);
+        isList = getIntent().getBooleanExtra(Constants.IS_LIST,true);
+        isHeaderIncluded = getIntent().getBooleanExtra(Constants.IS_HEADER_ENABLED,true);
     }
 
 
