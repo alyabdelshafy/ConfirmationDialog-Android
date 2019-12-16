@@ -52,10 +52,10 @@ public class SpeakolRecyclerView extends RecyclerView {
                     public int getSpanSize(int position) {
                         SpeakolAdapter speakolAdapter =  (SpeakolAdapter) getAdapter();
                         if(speakolAdapter != null) {
-                            if (position < speakolAdapter.getAdsCount() -1) {
-                                return 1;
-                            } else {
+                            if (position < speakolAdapter.getAdsCount() ) {
                                 return spanCount;
+                            } else {
+                                return 1;
                             }
                         }
                         return spanCount;

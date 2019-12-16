@@ -4,9 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Switch;
 
@@ -16,18 +19,30 @@ public class PortalActivity extends AppCompatActivity {
     Switch headerSwitch ;
     int adsNumber = 1;
     Button createBtn;
+    private LinearLayout itemPerLineLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_portal);
         bindViews();
-        setInitialValue();
         createBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openMainActivity();
             }
         });
+        listSegment.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    itemPerLineLayout.setVisibility(View.GONE);
+                }else {
+                    itemPerLineLayout.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        setInitialValue();
+
     }
 
     private void openMainActivity() {
@@ -36,6 +51,7 @@ public class PortalActivity extends AppCompatActivity {
             intent.putExtra(Constants.IS_LIST,true);
         }else {
             intent.putExtra(Constants.IS_LIST,false);
+
         }
 
         if(topSegment.isChecked()){
@@ -80,6 +96,7 @@ public class PortalActivity extends AppCompatActivity {
         numberPerAds = findViewById(R.id.et_number_per_ads);
         headerSwitch = findViewById(R.id.swt_header);
         createBtn = findViewById(R.id.btn_create);
+        itemPerLineLayout = findViewById(R.id.ll_item_per_line);
     }
 
     private void setInitialValue(){
